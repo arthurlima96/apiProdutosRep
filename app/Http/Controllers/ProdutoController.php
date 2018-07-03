@@ -20,7 +20,8 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        $produto = Produto::all();
+        return response()->json(['data'=>$produto, 'status'=>true]);
     }
 
 
@@ -50,7 +51,12 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
-        //
+        $produto = Produto::find($id);
+        if($produto){
+            return response()->json(['data'=>$produto, 'status'=>true]);
+        }else{
+            return response()->json(['data'=>'Não existe esse produto cadastrado', 'status'=>false]);
+        }
     }
 
     
@@ -64,7 +70,14 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $dados = $request->all();
+        $produto = Produto::find($id);        
+        if($produto){
+            $produto->update($dados);
+            return response()->json(['data'=>$produto, 'status'=>true]);
+        }else{
+            return response()->json(['data'=>'Erro ao editar o produto', 'status'=>false]);
+        }
     }
 
     /**
@@ -75,6 +88,12 @@ class ProdutoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $produto = Produto::find($id);        
+         if($produto){
+             $produto->delete();
+             return response()->json(['data'=>'Produto removido com sucesso!', 'status'=>true]);
+         }else{
+             return response()->json(['data'=>'Erro ao remover o produto', 'status'=>false]);
+         }
     }
 }
